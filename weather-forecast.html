@@ -20,6 +20,29 @@
 
 <script>
     const apiKey = "9a262c214ba051a758e71c562d21a2fe";
+
+    // CURRENT WEATHER AND FIVE-DAY FORECAST
+    async function getWeatherByCoordinates(latitude, longitude) {
+        // Fixed: Added backticks around template literals
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+        const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+
+        try {
+            // CURRENT WEATHER
+            const weatherResponse = await fetch(weatherUrl);
+
+            if (!weatherResponse.ok) {
+                throw new Error("Unable to retrieve weather");
+            }
+
+            const data = await weatherResponse.json();
+
+            // Fixed: Added backticks around template literal
+            document.getElementById("locationResult").textContent = `Location: ${data.name}, ${data.sys.country}`;
+        } catch (error) {
+            alert("Error: " + error.message);
+        }
+    }
 </script>
 
 </body>
