@@ -11,6 +11,8 @@
 
     <h2>Select Location</h2>
 
+    <button onclick="getGPSLocation()">Use My GPS</button>
+
     <p id="locationResult"></p>
 
     <hr>
@@ -20,6 +22,28 @@
 
 <script>
     const apiKey = "9a262c214ba051a758e71c562d21a2fe";
+
+    // GPS LOCATION
+    function getGPSLocation() {
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser.");
+            return;
+        }
+
+        document.getElementById("locationResult").textContent = "Getting your location...";
+
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                getWeatherByCoordinates(latitude, longitude);
+            },
+            function(error) {
+                document.getElementById("locationResult").textContent = "";
+                alert("GPS Error: " + error.message);
+            }
+        );
+    }
 
     // CURRENT WEATHER AND FIVE-DAY FORECAST
     async function getWeatherByCoordinates(latitude, longitude) {
